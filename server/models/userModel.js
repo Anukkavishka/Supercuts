@@ -33,6 +33,11 @@ User.init({
             isLowercase: true,
         }
     },
+    role : {
+        type: Sequelize.ENUM('USER', 'ADMN', 'SUPERADMN'),
+        defaultValue: "USER"
+
+    },
     photo: {
         type: Sequelize.STRING,
     },

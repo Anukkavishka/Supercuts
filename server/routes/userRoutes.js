@@ -14,7 +14,9 @@ router.route('/')
 
 router.route('/:id')
     .get(userController.getUser)
-    .delete(userController.deleteUser)
+    .delete(authController.protect,
+            authController.restrictTo('ADMN'),
+            userController.deleteUser)
     .patch(userController.updateUser);
 
 module.exports = router;

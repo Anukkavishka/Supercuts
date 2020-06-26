@@ -79,7 +79,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
 
-    const freshUser = await User.findById(decoded.id);
+    const freshUser = await User.findByPk(decoded.id);
 
     if (!freshUser) {
         new AppError('The user belonging to this token does no londger exists.', 401);
@@ -97,3 +97,14 @@ exports.protect = catchAsync(async (req, res, next) => {
     next();
 
 });
+
+exports.restrictTo = (...roles)=>{
+   return (req, res, next) => {
+        if(!roles.includes(req.user.role)){
+            return next(
+                new AppError("You don't have permission to perform this action",403)
+            );
+        }
+        next();
+    }
+}
